@@ -29,10 +29,10 @@ export const App: FC<Props> = ({ demo }) => {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color={"text.primary"}>
+      <Header/>
         <Container>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Header/>
             </Grid>
             <Grid item xs={3}>
               <NavBar mode={mode} setMode={setMode}/>
