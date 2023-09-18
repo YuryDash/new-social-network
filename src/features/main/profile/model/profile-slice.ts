@@ -1,16 +1,28 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { v1 } from "uuid";
 
-export type PostType = {
-    posts: string[]
+export type ProfileType = {
+    posts: PostType[]
 }
+export type PostType = {
+    postID: string
+    postMessage: string
+    date?: string
+}
+
 
 const slice = createSlice({
     name: "profile",
-    initialState: {} as PostType,
+    initialState: {
+        posts: [] as PostType[]
+    },
+
     reducers:{
         addPost: (state, action: PayloadAction<{ message: string }>) => {
-            state.posts.push(action.payload.message )
+            const newPost: PostType = {postID: v1(), postMessage: action.payload.message }
+            state.posts.unshift( newPost )
         }
+
     },
     extraReducers: {}
 })

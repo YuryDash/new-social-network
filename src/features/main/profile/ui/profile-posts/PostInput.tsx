@@ -1,50 +1,54 @@
 import {Container, Grid, IconButton, TextField, Tooltip} from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Avatar from "@mui/material/Avatar";
-import {ChangeEvent, FC} from "react";
+import {FC} from "react";
+import {useFormik} from "formik";
+import {profileActions} from "features/main/profile/model/profile-slice";
+import {useDispatch} from "react-redux";
 
-type Props = {
-    createPostCallback: (postText: string) => void
-    addPostCallBack: () => void
-}
+type Props = {}
 
-export const PostInput:FC<Props> = ({createPostCallback, addPostCallBack}) => {
 
-    const createPostHandler = (e: ChangeEvent<HTMLInputElement>) => createPostCallback(e.currentTarget.value)
-    const addNewPostHandler = () => addPostCallBack()
+export const PostInput: FC<Props> = ({}) => {
+    const dispatch = useDispatch()
+
+
+    const formik = useFormik({
+        initialValues: {
+            post: '',
+        },
+        onSubmit: (values) => {
+            dispatch(profileActions.addPost({message: values.post}))
+            formik.resetForm()
+        }
+    })
+
     return (
         <>
             <Container style={{marginTop: '50px'}}>
-                <Grid container spacing={3}>
-                    <Grid item xs={11}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            label="new post"
-                            id="fullWidth"
-                            onChange={createPostHandler}
-                        />
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Tooltip title="send post">
-                            <IconButton onClick={addNewPostHandler}>
-                                <AddCircleOutlineIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    </Grid>
-                </Grid>
+                <form onSubmit={formik.handleSubmit}>
+                    <Grid container spacing={2}>
 
+                        <Grid item xs={11}>
+                            <TextField
+                                {...formik.getFieldProps('post')}
+                                size="small"
+                                fullWidth
+                                label=" add new post"
+                            />
+                            {/*{formik.errors.post &&  <div style={{color:'red', textAlign:'center'}}>{formik.errors.post}</div>}*/}
+                        </Grid>
+
+                        <Grid item xs={1}>
+                            <Tooltip title="send post">
+                                <IconButton type='submit' onClick={formik.handleChange}>
+                                    <AddCircleOutlineIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+
+                    </Grid>
+                </form>
             </Container>
-                {/*<Grid container p={3}>*/}
-                {/*    <Grid item xs={1}>*/}
-                {/*        <Avatar>*/}
-
-                {/*        </Avatar>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={11}>*/}
-                {/*        {message}*/}
-                {/*    </Grid>*/}
-                {/*</Grid>*/}
         </>
     )
 }

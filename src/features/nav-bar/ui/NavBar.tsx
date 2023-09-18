@@ -82,7 +82,7 @@ export const NavBar = (props: PropsType) => {
                                 <ListItemText primary=" Logout"/>
                             </ListItemButton>
 
-                            <ListItemButton component={NavLink} to="#home"
+                            <ListItemButton component={NavLink} to="/"
                                             sx={{mt: '30px'}}
                             >
                                 <ListItemIcon>
