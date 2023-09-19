@@ -5,10 +5,7 @@ import {useFormik} from "formik";
 import {profileActions} from "features/main/profile/model/profile-slice";
 import {useDispatch} from "react-redux";
 
-type Props = {}
-
-
-export const PostInput: FC<Props> = ({}) => {
+export const PostInput = () => {
     const dispatch = useDispatch()
 
 

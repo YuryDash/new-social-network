@@ -1,6 +1,6 @@
-import {ProfileInfo} from "features/main/profile/ui/profile-info/ProfileInfo";
-import {PostInput} from "features/main/profile/ui/profile-posts/PostInput";
-import {ProfileWall} from "features/main/profile/ui/profile-posts/ProfileWall";
+import {ProfileInfo} from "features/main/profile/profile-info/ProfileInfo";
+import {PostInput} from "features/main/profile/profile-posts/profile-input/PostInput";
+import {ProfileWall} from "features/main/profile/profile-posts/profile-wall/ProfileWall";
 import {Container, Paper} from "@mui/material";
 
 export const Profile = () => {

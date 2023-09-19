@@ -1,21 +1,19 @@
-import s from "./profileInfo.module.css"
-import {FC} from "react";
+import s from "features/main/profile/profile-info/profileInfo.module.css"
 import {styled} from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import {Container, Grid, IconButton, Paper, Tooltip} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {useSelector} from "react-redux";
+import {AppRootState} from "app/store";
+import {ProfileInfoType} from "features/main/profile/model/profile-slice";
 
-type Props = {
-    avatar?: string
-    name?: string
-}
 const SmallAvatar = styled(AddCircleOutlineIcon)(({theme}) => ({
     width: 36,
     height: 36,
     border: `3px solid ${theme.palette.background.paper}`,
     borderRadius: '50%',
-    backgroundColor: '#1976D2'
+    backgroundColor: '#ffffff'
 }));
 const StyledAvatar = styled(Avatar)(({theme}) => ({
     backgroundColor: '#1976D2',
@@ -23,7 +21,10 @@ const StyledAvatar = styled(Avatar)(({theme}) => ({
     height: 156,
 }));
 
-export const ProfileInfo: FC<Props> = ({avatar, name}) => {
+export const ProfileInfo = () => {
+
+    const profileUserInfo = useSelector<AppRootState, ProfileInfoType>(state => state.profile.profile)
+    const profileStatus = useSelector<AppRootState, string>(state => state.profile.status)
 
     const changePhotoHandler = () => {
         alert('change Photo')
@@ -47,14 +48,14 @@ export const ProfileInfo: FC<Props> = ({avatar, name}) => {
                                 </Tooltip>
                             }
                         >
-                            <StyledAvatar sx={{width: 156, height: 156}} alt="Travis Howard"
-                                          src="/static/images/avatar/2.jpg"/>
+                            <StyledAvatar sx={{width: 156, height: 156}} alt={profileUserInfo.fullName || 'user'}
+                                          src={profileUserInfo?.photos?.large}/>
                         </Badge>
                     </Grid>
                     <Grid item xs={6}>
-                        <h4>Name: Escanor</h4>
-                        <h5>status: waka waka mazafaka :D</h5>
-                        <h5>About me: God</h5>
+                        <h4>{`name:  ${profileUserInfo.fullName}`}</h4>
+                        <h5>{`about me:  ${profileUserInfo.aboutMe}`}</h5>
+                        <h5>{`status:  ${profileStatus}`}</h5>
                     </Grid>
                 </Grid>
                 </Paper>
