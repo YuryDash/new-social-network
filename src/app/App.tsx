@@ -1,7 +1,7 @@
 import {Box, Container, createTheme, Grid} from "@mui/material";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {FC, useEffect, useState} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import {Header} from "features/header/ui/Header";
 import {NavBar} from "features/nav-bar/ui/NavBar";
 import "./App.css";
@@ -12,8 +12,10 @@ import {Users} from "features/main/users/ui/Users";
 import {News} from "features/main/news/ui/News";
 import {Music} from "features/main/music/ui/Music";
 import {Settings} from "@mui/icons-material";
-import {profileThunks} from "features/main/profile/model/profile-slice";
 import {useAppDispatch} from "app/store";
+import {Login} from "features/login/ui/Login";
+import {loginThunks} from "features/login/model/login-slice";
+import {Preloader} from "components/Preloader/Preloader";
 
 type Props = {
   demo?: boolean;
@@ -29,35 +31,38 @@ export const App: FC<Props> = ({ demo }) => {
     },
   });
   useEffect(() => {
-    dispatch( profileThunks.getProfile({userID: 28543}) )
-    dispatch( profileThunks.getStatus({userID: 28543}) )
+    dispatch(loginThunks.loginMe())
   }, []);
+  const location = useLocation();
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Box bgcolor={"background.default"} color={"text.primary"}>
-      <Header/>
-        <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+
+      <ThemeProvider theme={darkTheme}>
+        <Box bgcolor="background.default" color="text.primary">
+          <Header />
+          <Container>
+            <Grid container spacing={3}>
+              {!location.pathname.startsWith(PATH.LOGIN) && (
+                  <Grid item xs={3}>
+                    <NavBar mode={mode} setMode={setMode} />
+                  </Grid>
+              )}
+              <Grid item xs={location.pathname.startsWith(PATH.LOGIN) ? 12 : 9}>
+                <Routes>
+                  <Route path="/" element={<Profile />} />
+                  <Route path={PATH.DIALOGS} element={<Dialogs />} />
+                  <Route path={PATH.USERS} element={<Users />} />
+                  <Route path={PATH.NEWS} element={<News />} />
+                  <Route path={PATH.MUSIC} element={<Music />} />
+                  <Route path={PATH.SETTINGS} element={<Settings />} />
+                  <Route path={PATH.LOGIN} element={<Login />} />
+                  <Route path={'*'} element={<Preloader/>}/>
+                </Routes>
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <NavBar mode={mode} setMode={setMode}/>
-            </Grid>
-            <Grid item xs={9}>
-              <Routes>
-                <Route path={"/"} element={<Profile/>} />
-                <Route path={PATH.DIALOGS} element={<Dialogs/>} />
-                <Route path={PATH.USERS} element={<Users/>} />
-                <Route path={PATH.NEWS} element={<News/>} />
-                <Route path={PATH.MUSIC} element={<Music/>} />
-                <Route path={PATH.SETTINGS} element={<Settings/>} />
-              </Routes>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-    </ThemeProvider>
+          </Container>
+        </Box>
+      </ThemeProvider>
   );
 };
 

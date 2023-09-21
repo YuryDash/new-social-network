@@ -1,8 +1,22 @@
 import { Mail, Notifications } from "@mui/icons-material";
 import BalconyIcon from '@mui/icons-material/Balcony';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Avatar, Badge, Box, InputBase, Menu, MenuItem, styled, Toolbar, Typography } from "@mui/material";
+import {
+    AppBar,
+    Avatar,
+    Badge,
+    Box,
+    InputBase,
+    LinearProgress,
+    Menu,
+    MenuItem,
+    styled,
+    Toolbar,
+    Typography
+} from "@mui/material";
 import React, { useState } from "react";
+import {useSelector} from "react-redux";
+import {selectAppStatus} from "app/app-selectors";
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -37,6 +51,7 @@ const UserBox = styled(Box)(({theme}) => ({
 
 export const Header = () => {
     const [open, setOpen] = useState(false)
+    const status = useSelector(selectAppStatus);
     return (
         <AppBar position={'sticky'} sx={{marginBottom: '20px'}} >
             <StyledToolbar>
@@ -89,6 +104,7 @@ export const Header = () => {
                 <MenuItem>Settings</MenuItem>
                 <MenuItem>Log out</MenuItem>
             </Menu>
+            {status === "loading" && <LinearProgress/>}
         </AppBar>
     )
 }

@@ -2,9 +2,13 @@ import {combineReducers} from 'redux'
 import {configureStore} from '@reduxjs/toolkit'
 import {profileReducer} from "features/main/profile/model/profile-slice";
 import {useDispatch} from "react-redux";
+import {loginReducer} from "features/login/model/login-slice";
+import {appReducer} from "app/model/app-slice";
 
 export const rootReducer = combineReducers({
-    profile: profileReducer
+    profile: profileReducer,
+    login: loginReducer,
+    app: appReducer,
 })
 
 

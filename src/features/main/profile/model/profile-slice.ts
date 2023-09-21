@@ -84,7 +84,7 @@ const getProfile = createAsyncThunk<{ profile: ProfileInfoType }, { userID: numb
 })
 
 const getStatus = createAsyncThunk<{status: string}, { userID: number }>('profile/getStatus', async (arg, thunkAPI) => {
-    const {dispatch, rejectWithValue} = thunkAPI
+    const {rejectWithValue} = thunkAPI
     try {
         const res = await profileAPI.getStatus(arg.userID)
         console.log(res)
