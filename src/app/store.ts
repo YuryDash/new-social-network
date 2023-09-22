@@ -4,11 +4,13 @@ import {profileReducer} from "features/main/profile/model/profile-slice";
 import {useDispatch} from "react-redux";
 import {loginReducer} from "features/login/model/login-slice";
 import {appReducer} from "app/model/app-slice";
+import {usersReducer} from "features/main/users/model/users-slice";
 
 export const rootReducer = combineReducers({
     profile: profileReducer,
     login: loginReducer,
     app: appReducer,
+    users: usersReducer,
 })
 
 

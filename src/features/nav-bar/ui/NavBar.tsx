@@ -10,6 +10,8 @@ import {PATH} from "common/constants";
 import {ThemeType} from "app/App";
 import {NavLink} from "react-router-dom";
 import {NavigationItem} from "features/nav-bar/ui/NavItem/NavItem";
+import {useAppDispatch} from "app/store";
+import {loginThunks} from "features/login/model/login-slice";
 
 type PropsType = {
     setMode: (str: ThemeType) => void
@@ -17,6 +19,10 @@ type PropsType = {
 }
 
 export const NavBar = (props: PropsType) => {
+    const dispatch = useAppDispatch()
+    const onclickCallback = () => {
+        dispatch(loginThunks.logoutUser())
+    }
     return (
         <Box
             flex={1}
@@ -33,14 +39,15 @@ export const NavBar = (props: PropsType) => {
                             flexDirection: 'column',
                             alignItems: 'flex-start'
                         }}>
-                            <NavigationItem navigateTo={'/'} muiIcon={HomeIcon} name={'Home'} />
-                            <NavigationItem navigateTo={PATH.USERS} muiIcon={GroupAddOutlinedIcon} name={'Users'} />
-                            <NavigationItem navigateTo={PATH.DIALOGS} muiIcon={EmailOutlinedIcon} name={'Message'} />
-                            <NavigationItem navigateTo={PATH.MUSIC} muiIcon={MusicVideoOutlinedIcon} name={'Music'} />
-                            <NavigationItem navigateTo={PATH.NEWS} muiIcon={NewspaperOutlinedIcon} name={'News'} />
-                            <NavigationItem navigateTo={PATH.SETTINGS} muiIcon={SettingsOutlinedIcon} name={'Settings'} />
-                            <NavigationItem navigateTo={PATH.LOGIN} muiIcon={GroupAddOutlinedIcon} name={'Logout'} />
-
+                            <NavigationItem navigateTo={'/'} muiIcon={HomeIcon} name={'Home'}/>
+                            <NavigationItem navigateTo={PATH.USERS} muiIcon={GroupAddOutlinedIcon} name={'Users'}/>
+                            <NavigationItem navigateTo={PATH.DIALOGS} muiIcon={EmailOutlinedIcon} name={'Message'}/>
+                            <NavigationItem navigateTo={PATH.MUSIC} muiIcon={MusicVideoOutlinedIcon} name={'Music'}/>
+                            <NavigationItem navigateTo={PATH.NEWS} muiIcon={NewspaperOutlinedIcon} name={'News'}/>
+                            <NavigationItem navigateTo={PATH.SETTINGS} muiIcon={SettingsOutlinedIcon}
+                                            name={'Settings'}/>
+                            <NavigationItem oncklickCallback={onclickCallback} navigateTo={PATH.LOGIN} muiIcon={GroupAddOutlinedIcon}
+                                            name={'Logout'}/>
 
                             <ListItemButton component={NavLink} to="/"
                                             sx={{mt: '30px'}}

@@ -5,8 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import {Container, Grid, IconButton, Paper, Tooltip} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import {useSelector} from "react-redux";
-import {AppRootState} from "app/store";
-import {ProfileInfoType} from "features/main/profile/model/profile-slice";
+import {AppRootState, useAppDispatch} from "app/store";
+import {ProfileInfoType, profileThunks} from "features/main/profile/model/profile-slice";
+import {useEffect} from "react";
 
 const SmallAvatar = styled(AddCircleOutlineIcon)(({theme}) => ({
     width: 36,
@@ -25,10 +26,19 @@ export const ProfileInfo = () => {
 
     const profileUserInfo = useSelector<AppRootState, ProfileInfoType>(state => state.profile.profile)
     const profileStatus = useSelector<AppRootState, string>(state => state.profile.status)
-
+    let userID = useSelector<AppRootState, number | null>( state => state.login.id)
+    const dispatch = useAppDispatch()
     const changePhotoHandler = () => {
         alert('change Photo')
     }
+
+    useEffect(() => {
+        if (!userID) {
+            userID = 28513
+        }
+        dispatch(profileThunks.getProfile({userID}))
+        dispatch(profileThunks.getStatus({userID}))
+    }, [profileThunks.getProfile, profileThunks.getStatus, userID]);
 
     return (
         <div className={s.container}>

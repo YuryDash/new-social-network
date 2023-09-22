@@ -3,8 +3,11 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import {useFormik} from "formik";
-import {useAppDispatch} from "app/store";
+import {AppRootState, useAppDispatch} from "app/store";
 import {loginThunks} from "features/login/model/login-slice";
+import {useSelector} from 'react-redux';
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 //====================================== pass with eye ======================================
 // export const Login = () => {
 //     const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +42,9 @@ import {loginThunks} from "features/login/model/login-slice";
 //====================================== pass with eye ======================================
 
 export const Login = () => {
-const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
+    const isAuth = useSelector<AppRootState, boolean>(state => state.login.isAuth)
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -51,6 +56,12 @@ const dispatch = useAppDispatch()
             dispatch(loginThunks.loginUser({email: values.email, password: values.password, rememberMe: values.rememberMe}))
         },
     })
+
+    useEffect(() => {
+        if (isAuth) {
+            navigate('/');
+        }
+    }, [isAuth, navigate]);
 
     return (
         <Grid container justifyContent={'center'} sx={{mt: 10}}>

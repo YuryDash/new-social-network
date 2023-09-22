@@ -3,7 +3,6 @@ import axios from "axios";
 export type ResponseDataType<T = {}> = {
     resultCode: number;
     messages: string[];
-    fieldsErrors: string[]
     data: T;
 };
 export const instance = axios.create({

@@ -6,12 +6,13 @@ type Props = {
     name: string
     navigateTo: string
     muiIcon: React.ElementType
+    oncklickCallback?: () => void
 }
 
-export const NavigationItem: FC<Props> = ({name, muiIcon, navigateTo}) => {
+export const NavigationItem: FC<Props> = ({name, muiIcon, navigateTo,oncklickCallback}) => {
 const MyComponent = muiIcon
     return (
-        <ListItemButton component={NavLink} to={navigateTo}>
+        <ListItemButton onClick={oncklickCallback} component={NavLink} to={navigateTo}>
             <ListItemIcon>
                 <MyComponent/>
             </ListItemIcon>

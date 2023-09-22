@@ -1,7 +1,7 @@
 import {Box, Container, createTheme, Grid} from "@mui/material";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import {FC, useEffect, useState} from "react";
-import {Route, Routes, useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {Header} from "features/header/ui/Header";
 import {NavBar} from "features/nav-bar/ui/NavBar";
 import "./App.css";
@@ -12,28 +12,35 @@ import {Users} from "features/main/users/ui/Users";
 import {News} from "features/main/news/ui/News";
 import {Music} from "features/main/music/ui/Music";
 import {Settings} from "@mui/icons-material";
-import {useAppDispatch} from "app/store";
+import {AppRootState, useAppDispatch} from "app/store";
 import {Login} from "features/login/ui/Login";
 import {loginThunks} from "features/login/model/login-slice";
 import {Preloader} from "components/Preloader/Preloader";
+import {useSelector} from "react-redux";
 
-type Props = {
-  demo?: boolean;
-};
+
 export type ThemeType = "dark" | "light";
 
-export const App: FC<Props> = ({ demo }) => {
+export const App = () => {
   const [mode, setMode] = useState<ThemeType>("light");
   const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isAuth = useSelector<AppRootState, boolean>(state => state.login.isAuth);
+
   const darkTheme = createTheme({
     palette: {
       mode: mode,
     },
   });
+
   useEffect(() => {
     dispatch(loginThunks.loginMe())
-  }, []);
-  const location = useLocation();
+    if(!isAuth){
+      navigate(PATH.LOGIN)
+    }
+  }, [isAuth]);
+
 
   return (
 

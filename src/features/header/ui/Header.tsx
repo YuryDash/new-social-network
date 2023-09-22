@@ -17,6 +17,7 @@ import {
 import React, { useState } from "react";
 import {useSelector} from "react-redux";
 import {selectAppStatus} from "app/app-selectors";
+import {AppRootState} from "app/store";
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -52,6 +53,7 @@ const UserBox = styled(Box)(({theme}) => ({
 export const Header = () => {
     const [open, setOpen] = useState(false)
     const status = useSelector(selectAppStatus);
+    const userAvatar = useSelector<AppRootState, string>(state => state.profile?.profile?.photos?.small)
     return (
         <AppBar position={'sticky'} sx={{marginBottom: '20px'}} >
             <StyledToolbar>
@@ -63,7 +65,7 @@ export const Header = () => {
                 <Search><InputBase placeholder="Search..."/></Search>
                 <Icons>
                     <Avatar
-                        src="https://i.pinimg.com/originals/44/8d/87/448d8733d48968f2c48896178f81dce1.jpg"
+                        src={userAvatar || "https://i.pinimg.com/originals/44/8d/87/448d8733d48968f2c48896178f81dce1.jpg"}
                     />
                     <Badge badgeContent={4} color={'error'}>
                         <Mail/>
@@ -76,7 +78,7 @@ export const Header = () => {
 
                 <UserBox>
                     <Avatar
-                        src="https://i.pinimg.com/originals/44/8d/87/448d8733d48968f2c48896178f81dce1.jpg"
+                        src={userAvatar || "https://i.pinimg.com/originals/44/8d/87/448d8733d48968f2c48896178f81dce1.jpg"}
                     />
                     <Typography>Escanor</Typography>
                     <MenuIcon onClick={(e)=>setOpen(true)}/>
