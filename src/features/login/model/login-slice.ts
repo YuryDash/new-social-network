@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {loginAPI} from "features/login/api/loginAPI";
+import {appActions} from "app/model/app-slice";
+import {profileThunks} from "features/main/profile/model/profile-slice";
 
 export type AuthDataType = {
     id: null | number
@@ -21,13 +23,13 @@ const slice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(loginMe.fulfilled, (state, action) => {
-                return action.payload;
-            })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.id = action.payload.userID;
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
+                return action.payload;
+            })
+            .addCase(loginMe.fulfilled, (state, action) => {
                 return action.payload;
             })
     }
@@ -40,11 +42,9 @@ const loginUser = createAsyncThunk<{ userID: number }, { email: string, password
         const res = await loginAPI.login(arg.email, arg.password, arg.rememberMe)
         if (res.data.resultCode === 0) {
             dispatch(loginMe())
-            console.log(res.data.data.userId)
             return {userID: res.data.data.userId}
         } else {
             let message = res.data.messages.length > 0 ? res.data.messages[0] : "Some Error";
-            console.log(message)
             return rejectWithValue(null)
         }
     } catch (e) {
@@ -52,26 +52,33 @@ const loginUser = createAsyncThunk<{ userID: number }, { email: string, password
     }
 })
 
-const loginMe = createAsyncThunk<{ id: number, login: string, email: string, isAuth: boolean }, undefined>('login/loginMe', async (arg, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI
+const loginMe = createAsyncThunk<{ id: number, login: string, email: string, isAuth: boolean }, undefined>
+('login/loginMe', async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
     try {
         const res = await loginAPI.me()
         if (res.data.resultCode === 0) {
             const {id, login, email} = res.data.data
+            dispatch(profileThunks.getProfile({userID: id}))
+            dispatch(profileThunks.getStatus({userID: id}))
+            dispatch(appActions.setAppInitialized({isInitialized: true}))
             return {id, login, email, isAuth: true}
         } else {
+            dispatch(appActions.setAppInitialized({isInitialized: true}))
             return rejectWithValue(null)
         }
     } catch (e) {
+        dispatch(appActions.setAppInitialized({isInitialized: true}))
         return rejectWithValue(null)
     }
 })
 
 const logoutUser = createAsyncThunk<any, undefined>('login/logoutUser', async (_, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI
+    const {dispatch,rejectWithValue} = thunkAPI
     try {
         const res = await loginAPI.logout()
-        if( res.data.resultCode === 0 ){
+        if (res.data.resultCode === 0) {
+            dispatch(appActions.setAppInitialized({isInitialized: false}))
             return {id: null, login: null, email: null, isAuth: false}
         } else {
             rejectWithValue(null)
@@ -83,4 +90,4 @@ const logoutUser = createAsyncThunk<any, undefined>('login/logoutUser', async (_
 
 export const loginActions = slice.actions;
 export const loginReducer = slice.reducer;
-export const loginThunks = {loginUser, loginMe,logoutUser}
+export const loginThunks = {loginUser, loginMe, logoutUser}

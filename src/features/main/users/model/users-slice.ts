@@ -6,22 +6,20 @@ type UsersState = {
     pageSize: number
     totalUsersCount: number
     currentPage: number
-    isFetching: boolean
+    isUserInitialized: boolean
     followingInProgress: number[]
 }
 
 export type UserItem = {
-    item: {
         followed: boolean
         id: number
         name: string
         "photos": {
             small: null | string,
             large: null | string
-        }
-        "status": null | string,
-        uniqueUrlName: string | null
     }
+    "status": null | string,
+    uniqueUrlName: string | null
 }
 
 export type UsersResponseType = {
@@ -32,10 +30,10 @@ export type UsersResponseType = {
 
 const initialState: UsersState = {
     users: [],
-    pageSize: 10,
+    pageSize: 20,
     totalUsersCount: 13,
     currentPage: 1,
-    isFetching: false,
+    isUserInitialized: false,
     followingInProgress: [],
 }
 
@@ -51,19 +49,16 @@ const slice = createSlice({
         })
     }
 })
-
 const getUsers = createAsyncThunk<{ users: UsersResponseType }, { currentPage: number, pageSize: number }>
 ('users/getUsers', async (arg, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI
+    const {dispatch, rejectWithValue} = thunkAPI
     try {
-        debugger
+
         const res = await usersAPI.getUsers(arg.currentPage, arg.pageSize)
         return {users: res.data}
     } catch (e) {
         return rejectWithValue(null)
-    }
-})
+    } })
 
-export const usersActions = slice.actions;
 export const usersReducer = slice.reducer;
 export const usersThunks = {getUsers};

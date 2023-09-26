@@ -27,6 +27,7 @@ export const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuth = useSelector<AppRootState, boolean>(state => state.login.isAuth);
+  const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
 
   const darkTheme = createTheme({
     palette: {
@@ -36,10 +37,11 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(loginThunks.loginMe())
-    if(!isAuth){
-      navigate(PATH.LOGIN)
+    if(!isAuth && isInitialized){
+     navigate(PATH.LOGIN)
     }
   }, [isAuth]);
+
 
 
   return (

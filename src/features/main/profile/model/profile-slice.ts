@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {v1} from "uuid";
 import {profileAPI} from "features/main/profile/api/profileAPI";
+import moment from "moment";
 
 export type ProfileType = {
     posts: PostType[]
@@ -10,7 +11,7 @@ export type ProfileType = {
 export type PostType = {
     postID: string
     postMessage: string
-    date?: string
+    date: string
 }
 export type ProfileInfoType = {
     "aboutMe": string
@@ -43,9 +44,18 @@ const slice = createSlice({
     },
 
     reducers: {
+        // addPost: (state, action: PayloadAction<{ message: string }>) => {
+        //     const newPost: PostType = {postID: v1(), postMessage: action.payload.message , date: }
+        //     state.posts.unshift(newPost)
+        // },
         addPost: (state, action: PayloadAction<{ message: string }>) => {
-            const newPost: PostType = {postID: v1(), postMessage: action.payload.message}
-            state.posts.unshift(newPost)
+            const currentDate = moment();
+            const newPost: PostType = {
+                postID: v1(),
+                postMessage: action.payload.message,
+                date: currentDate.format('YYYY-MM-DD HH:mm:ss'), // Преобразуем дату в строку формата ISO для сохранения в состоянии
+            };
+            state.posts.unshift(newPost);
         },
         changePost: (state, action: PayloadAction<{ newPost: string, id: string }>) => {
             const index = state.posts.findIndex(post => post.postID === action.payload.id)
@@ -83,8 +93,10 @@ const getProfile = createAsyncThunk<{ profile: ProfileInfoType }, { userID: numb
     }
 })
 
-const getStatus = createAsyncThunk<{status: string}, { userID: number }>('profile/getStatus', async (arg, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI
+const getStatus = createAsyncThunk<{ status: string }, {
+    userID: number
+}>('profile/getStatus', async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
     try {
         const res = await profileAPI.getStatus(arg.userID)
         console.log(res)
