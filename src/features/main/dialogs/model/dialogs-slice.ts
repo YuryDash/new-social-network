@@ -1,3 +1,1 @@
-export const slice = () => {
-
-}
+export const slice = () => {};

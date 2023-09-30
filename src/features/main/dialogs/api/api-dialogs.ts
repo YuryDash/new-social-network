@@ -1,5 +1,1 @@
-
-
-export const apiDialogs = {
-
-}
+export const apiDialogs = {};

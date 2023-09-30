@@ -1,7 +1,3 @@
 export const Dialogs = () => {
-    return (
-        <div>
-            DIALOGS MAAAAN!
-        </div>
-    )
-}
+  return <div>DIALOGS MAAAAN!</div>;
+};
