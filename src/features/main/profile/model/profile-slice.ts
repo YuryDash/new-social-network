@@ -93,7 +93,6 @@ const getProfile = createAsyncThunk<{ profile: ProfileInfoType }, { userID: numb
     const { dispatch, rejectWithValue } = thunkAPI;
     try {
       const res = await profileAPI.getProfile(arg.userID);
-      console.log(res);
       if (res.data.userId) {
         return { profile: res.data };
       } else {

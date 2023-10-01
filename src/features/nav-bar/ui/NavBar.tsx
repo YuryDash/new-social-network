@@ -44,7 +44,7 @@ export const NavBar = (props: PropsType) => {
                 alignItems: "flex-start",
               }}
             >
-              <NavigationItem navigateTo={"/"} muiIcon={HomeIcon} name={"Home"} />
+              <NavigationItem navigateTo={"/profile"} muiIcon={HomeIcon} name={"Home"} />
               <NavigationItem navigateTo={PATH.USERS} muiIcon={GroupAddOutlinedIcon} name={"Users"} />
               <NavigationItem navigateTo={PATH.DIALOGS} muiIcon={EmailOutlinedIcon} name={"Message"} />
               <NavigationItem navigateTo={PATH.MUSIC} muiIcon={MusicVideoOutlinedIcon} name={"Music"} />

@@ -32,7 +32,6 @@ export const Users = () => {
   }
 
   const mappedUsers = users.map((user) => {
-    console.log(users);
     return (
       <Grid
         container
@@ -44,7 +43,7 @@ export const Users = () => {
           <Avatar src={user.photos.small || "lol"}>{user.photos.small ? null : user.name[0]}</Avatar>
           <Box style={{ paddingLeft: "15px" }}>
             <div style={{ color: "#1976D2" }}>{user.name}</div>
-            <div style={{ color: "#BDBDBD" }}>About me: {user.status ? user.status : `i'am gay`}</div>
+            <div style={{ color: "#BDBDBD" }}>About me: {user.status ? user.status : `i'am gay with out status`}</div>
           </Box>
         </NavLink>
         <Box sx={{ ml: 10 }}>

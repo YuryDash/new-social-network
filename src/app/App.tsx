@@ -1,6 +1,6 @@
 import { Box, Container, createTheme, Grid } from "@mui/material";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Header } from "features/header/ui/Header";
 import { NavBar } from "features/nav-bar/ui/NavBar";
@@ -54,14 +54,18 @@ export const App = () => {
             )}
             <Grid item xs={location.pathname.startsWith(PATH.LOGIN) ? 12 : 9}>
               <Routes>
-                <Route path="/" element={<Profile />} />
+                <Route path="" element={<ProfilePage />} />
+                <Route path="/profile" element={<Profile />}>
+                  <Route index element={<Profile />} />
+                  <Route path=":userID" element={<Profile />} />
+                </Route>
                 <Route path={PATH.DIALOGS} element={<Dialogs />} />
                 <Route path={PATH.USERS} element={<Users />} />
                 <Route path={PATH.NEWS} element={<News />} />
                 <Route path={PATH.MUSIC} element={<Music />} />
                 <Route path={PATH.SETTINGS} element={<Settings />} />
                 <Route path={PATH.LOGIN} element={<Login />} />
-                <Route path={"*"} element={<Preloader />} />
+                <Route path="*" element={<div>404 PAGE NOT FOUND</div>} />
               </Routes>
             </Grid>
           </Grid>
@@ -69,6 +73,12 @@ export const App = () => {
       </Box>
     </ThemeProvider>
   );
+};
+
+const ProfilePage = () => {
+  const navigate = useNavigate();
+  navigate("/profile", { replace: true });
+  return null;
 };
 
 export default App;

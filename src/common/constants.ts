@@ -1,5 +1,5 @@
 export const PATH = {
-  PROFILE: "/profile/:userId?",
+  PROFILE: "/profile/",
   DIALOGS: "/dialogs",
   USERS: "/users",
   NEWS: "/news",

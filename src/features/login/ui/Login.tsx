@@ -60,7 +60,7 @@ export const Login = () => {
   });
 
   if (isAuth) {
-    navigate("/");
+    navigate("/profile");
   }
 
   return (
